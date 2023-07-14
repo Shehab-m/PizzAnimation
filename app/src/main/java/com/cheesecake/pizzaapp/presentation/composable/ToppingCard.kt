@@ -31,7 +31,7 @@ import com.cheesecake.pizzaapp.ui.theme.Green
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToppingCard(image: Painter, modifier: Modifier = Modifier) {
+fun ToppingCard(image: Painter, modifier: Modifier = Modifier, onClick: ()-> Unit) {
     var state by rememberSaveable {
         mutableStateOf(CardToppingState.NOT_SELECTED)
     }
@@ -48,8 +48,9 @@ fun ToppingCard(image: Painter, modifier: Modifier = Modifier) {
             .size(70.dp)
             .clickable(
                 interactionSource = CreateMutableInteractionSource(),
-                indication = null
-            ) { state = state.nextState() },
+                indication = null,
+                onClick = onClick.also { state = state.nextState() }
+            ),
         colors = CardDefaults.cardColors(containerColor),
         shape = CircleShape,
     ) {
@@ -68,5 +69,5 @@ fun ToppingCard(image: Painter, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun ToppingCardPreview() {
-    ToppingCard(painterResource(id = R.drawable.basil_3))
+    ToppingCard(painterResource(id = R.drawable.basil_3), onClick = {})
 }
