@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +35,7 @@ import com.cheesecake.pizzaapp.R
 import com.cheesecake.pizzaapp.presentation.composable.PizzaSizeCard
 import com.cheesecake.pizzaapp.presentation.composable.PizzaViewModel
 import com.cheesecake.pizzaapp.presentation.composable.ToppingCard
+import com.cheesecake.pizzaapp.presentation.state.PizzaUIState
 import com.cheesecake.pizzaapp.ui.theme.Grey
 import com.cheesecake.pizzaapp.ui.theme.Marron
 import com.cheesecake.pizzaapp.ui.theme.Typography
@@ -86,6 +91,13 @@ fun PizzaScreenContent(state: PizzaUIState) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+
+            Card(modifier = Modifier
+                .size(45.dp),
+                colors = CardDefaults.cardColors(White),
+                shape = CircleShape,
+                elevation = CardDefaults.cardElevation(1.dp)
+            ){}
 
             PizzaSizeCard(text = "S")
             PizzaSizeCard(text = "M", modifier = Modifier.padding(horizontal = 16.dp))
