@@ -1,14 +1,10 @@
 package com.cheesecake.pizzaapp.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -42,15 +37,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesecake.pizzaapp.R
+import com.cheesecake.pizzaapp.presentation.composable.HorizontalPizzaPager
 import com.cheesecake.pizzaapp.presentation.composable.PizzaSizeCard
 import com.cheesecake.pizzaapp.presentation.composable.ToppingCard
 import com.cheesecake.pizzaapp.presentation.state.PizzaUIState
+import com.cheesecake.pizzaapp.repository.PizzaRepositoryImpl
 import com.cheesecake.pizzaapp.ui.theme.Grey
 import com.cheesecake.pizzaapp.ui.theme.Marron
 import com.cheesecake.pizzaapp.ui.theme.Typography
@@ -66,14 +62,12 @@ fun PizzaScreen(
     PizzaScreenContent(state, pagerState) { return@PizzaScreenContent 100 }
 }
 
-@SuppressLint("UnrememberedMutableState")
+@SuppressLint("UnrememberedMutableState", "MutableCollectionMutableState")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: () -> Int) {
     Column(
-        Modifier
-            .fillMaxSize()
-            .background(White),
+        Modifier.fillMaxSize().background(White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -103,50 +97,21 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: ()
         val scale by animateFloatAsState(targetValue = if (isVisible) .6f else 9f)
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(.4f)
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(.4f)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.plate),
                 contentDescription = "plate",
-                modifier = Modifier.padding(horizontal = 60.dp)
+                modifier = Modifier.padding(horizontal = 60.dp).align(Alignment.Center)
             )
-            var size = mutableStateOf(1080.dp)
-
-            HorizontalPager(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
-                state = pagerState,
-                pageCount = state.pizzas.size,
-            ) { page ->
-                val pizza = state.pizzas[page % state.pizzas.size]
-                Log.i("PizzaScreenContent: ", onChange.invoke().toString())
-                Image(
-                    painter = painterResource(pizza.breadId),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(horizontal = 80.dp)
-                        .size(size.value)
-                        .clickable(onClick = { size.value = 50.dp })
-
-                )
-            }
-            androidx.compose.animation.AnimatedVisibility(
-                visible = isVisible, enter = fadeIn(), exit = ExitTransition.None,
-                modifier = Modifier
-                    .scale(scale)
-                    .align(Alignment.Center)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.group_sussage),
-                    contentDescription = "sus"
-                )
-            }
+            HorizontalPizzaPager(state.pizzas,pagerState,Modifier.align(Alignment.Center))
 
         }
-        Text(text = "$17", style = Typography.bodyLarge, modifier = Modifier.padding(top = 30.dp))
+        Text(
+            text = "$${state.pizzas[pagerState.currentPage].totalPrice}",
+            style = Typography.bodyLarge,
+            modifier = Modifier.padding(top = 30.dp)
+        )
         Row(
             Modifier
                 .fillMaxWidth()
@@ -183,7 +148,7 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: ()
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(state.toppings) {
-                ToppingCard(image = painterResource(id = it)) { isVisible = !isVisible }
+                ToppingCard(image = painterResource(id = it.imageId)) {state.pizzas[pagerState.currentPage].topping.add(it.toppingData)}
             }
         }
 
@@ -214,8 +179,9 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: ()
 }
 
 
+
 @Preview
 @Composable
 fun PizzaScreenPreview() {
-    PizzaScreen()
+    PizzaScreen(PizzaViewModel(PizzaRepositoryImpl()))
 }
