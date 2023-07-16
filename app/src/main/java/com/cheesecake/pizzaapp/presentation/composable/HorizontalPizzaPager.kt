@@ -1,6 +1,7 @@
 package com.cheesecake.pizzaapp.presentation.composable
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateFloatAsState
@@ -18,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -27,9 +29,10 @@ import androidx.compose.ui.unit.dp
 import com.cheesecake.pizzaapp.R
 import com.cheesecake.pizzaapp.model.Pizza
 import com.cheesecake.pizzaapp.model.ToppingData
+import kotlinx.coroutines.launch
 
 
-@SuppressLint("MutableCollectionMutableState")
+@SuppressLint("MutableCollectionMutableState", "CoroutineCreationDuringComposition")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPizzaPager(
@@ -43,11 +46,9 @@ fun HorizontalPizzaPager(
         state = pagerState,
         pageCount = pizzas.size,
     ) { page ->
-        val pizza by remember {
-            mutableStateOf(pizzas[page])
-        }
-        val toppingsState = remember(pizza) { mutableStateOf(pizza.topping) }
-        val toppingsScale by animateFloatAsState(targetValue = if(toppingsState.value.isEmpty())10f else .45f)
+        val pizza by remember { mutableStateOf(pizzas[pagerState.currentPage]) }
+        val toppingsState by remember{ mutableStateOf(pizza.topping) }
+        val toppingsScale by animateFloatAsState(targetValue = if (toppingsState.isEmpty()) 10f else .45f)
         Image(
             painter = painterResource(pizza.breadId),
             contentDescription = null,
@@ -57,13 +58,27 @@ fun HorizontalPizzaPager(
         )
         pizza.topping.forEach {
             AnimatedVisibility(
-                visible = true, enter = fadeIn(), exit = ExitTransition.None,
-                modifier = Modifier.scale(toppingsScale)
+                visible = true,
+                enter = fadeIn(),
+                exit = ExitTransition.None,
+                modifier = Modifier.scale(toppingsScale),
             ) {
                 Image(painter = painterResource(id = it.imageId), contentDescription = "topping")
             }
         }
+//        toppingsState.forEach { topping ->
+//            AnimatedVisibility(
+//                visible = true,
+//                enter = fadeIn(),
+//                exit = ExitTransition.None,
+//                modifier = Modifier.scale(toppingsScale),
+//            ) {
+//                Image(painter = painterResource(id = topping.imageId), contentDescription = "topping")
+//            }
+//        }
+        Log.i( "HorizontalPizzaPager: ", pizza.toString())
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)

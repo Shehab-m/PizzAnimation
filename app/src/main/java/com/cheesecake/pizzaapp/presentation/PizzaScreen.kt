@@ -59,13 +59,13 @@ fun PizzaScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = 0)
-    PizzaScreenContent(state, pagerState) { return@PizzaScreenContent 100 }
+    PizzaScreenContent(state, pagerState,viewModel)
 }
 
 @SuppressLint("UnrememberedMutableState", "MutableCollectionMutableState")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: () -> Int) {
+fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: PizzaScreenInteractions) {
     Column(
         Modifier.fillMaxSize().background(White),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -105,7 +105,6 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: ()
                 modifier = Modifier.padding(horizontal = 60.dp).align(Alignment.Center)
             )
             HorizontalPizzaPager(state.pizzas,pagerState,Modifier.align(Alignment.Center))
-
         }
         Text(
             text = "$${state.pizzas[pagerState.currentPage].totalPrice}",
@@ -148,7 +147,7 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: ()
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(state.toppings) {
-                ToppingCard(image = painterResource(id = it.imageId)) {state.pizzas[pagerState.currentPage].topping.add(it.toppingData)}
+                ToppingCard(image = painterResource(id = it.imageId)) {onChange.onClickTopping(pagerState.currentPage,it.toppingData)}
             }
         }
 

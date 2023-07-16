@@ -5,5 +5,5 @@ import com.cheesecake.pizzaapp.model.Topping
 
 data class PizzaUIState(
     val toppings: List<Topping> = emptyList(),
-    val pizzas: List<Pizza> = emptyList()
+    val pizzas: MutableList<Pizza> = mutableListOf()
 )

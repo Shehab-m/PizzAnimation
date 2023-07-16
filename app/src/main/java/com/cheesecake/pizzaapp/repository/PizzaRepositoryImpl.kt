@@ -18,8 +18,8 @@ class PizzaRepositoryImpl @Inject constructor() : PizzaRepository {
         )
     }
 
-    override fun getPizzas(): List<Pizza> {
-        return listOf(
+    override fun getPizzas(): MutableList<Pizza> {
+        return mutableListOf(
             Pizza(
                 R.drawable.bread_1, 17, 1f,mutableListOf()
             ),
