@@ -1,7 +1,8 @@
-package com.cheesecake.pizzaapp.presentation.composable
+package com.cheesecake.pizzaapp.presentation
 
 import androidx.lifecycle.ViewModel
 import com.cheesecake.pizzaapp.R
+import com.cheesecake.pizzaapp.model.Pizza
 import com.cheesecake.pizzaapp.presentation.state.PizzaUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,13 +30,24 @@ class PizzaViewModel @Inject constructor() : ViewModel() {
                     R.drawable.mushroom_3,
                     R.drawable.sausage_3,
                 ),
-                bread = listOf(
-                    R.drawable.bread_1,
-                    R.drawable.bread_2,
-                    R.drawable.bread_3,
-                    R.drawable.bread_4,
-                    R.drawable.bread_5,
-                ),
+                pizzas = listOf(
+                    Pizza(
+                        R.drawable.bread_1, 17, 1f, mutableListOf()
+                    ),
+                    Pizza(
+                        R.drawable.bread_2, 21, 1f, mutableListOf()
+                    ),
+                    Pizza(
+                        R.drawable.bread_3, 19, 1f, mutableListOf()
+                    ),
+                    Pizza(
+                        R.drawable.bread_4, 12, 1f, mutableListOf()
+                    ),
+                    Pizza(
+                        R.drawable.bread_5, 24, 1f, mutableListOf()
+                    ),
+
+                    )
             )
         }
     }

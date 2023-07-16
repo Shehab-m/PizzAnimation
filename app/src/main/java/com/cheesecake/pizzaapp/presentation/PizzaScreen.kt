@@ -1,6 +1,7 @@
 package com.cheesecake.pizzaapp.presentation
 
-import androidx.compose.animation.AnimatedVisibility
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
@@ -14,14 +15,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -34,7 +32,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,16 +42,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesecake.pizzaapp.R
 import com.cheesecake.pizzaapp.presentation.composable.PizzaSizeCard
-import com.cheesecake.pizzaapp.presentation.composable.PizzaViewModel
 import com.cheesecake.pizzaapp.presentation.composable.ToppingCard
 import com.cheesecake.pizzaapp.presentation.state.PizzaUIState
 import com.cheesecake.pizzaapp.ui.theme.Grey
@@ -69,12 +63,13 @@ fun PizzaScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = 0)
-    PizzaScreenContent(state, pagerState)
+    PizzaScreenContent(state, pagerState) { return@PizzaScreenContent 100 }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState) {
+fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState, onChange: () -> Int) {
     Column(
         Modifier
             .fillMaxSize()
@@ -102,7 +97,6 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState) {
         }
 
 
-
         var isVisible by remember {
             mutableStateOf(false)
         }
@@ -112,25 +106,31 @@ fun PizzaScreenContent(state: PizzaUIState, pagerState: PagerState) {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(.4f)
-                .clipToBounds()
         ) {
             Image(
                 painter = painterResource(id = R.drawable.plate),
                 contentDescription = "plate",
                 modifier = Modifier.padding(horizontal = 60.dp)
             )
-            HorizontalPager(
-                modifier = Modifier.fillMaxWidth().align(Alignment.Center),
-                state = pagerState,
-                pageCount = state.bread.size,
-            ) { page ->
-                val bread = state.bread[page % state.bread.size]
+            var size = mutableStateOf(1080.dp)
 
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                state = pagerState,
+                pageCount = state.pizzas.size,
+            ) { page ->
+                val pizza = state.pizzas[page % state.pizzas.size]
+                Log.i("PizzaScreenContent: ", onChange.invoke().toString())
                 Image(
-                    painter = painterResource(bread),
+                    painter = painterResource(pizza.breadId),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(horizontal = 80.dp)
+                        .size(size.value)
+                        .clickable(onClick = { size.value = 50.dp })
+
                 )
             }
             androidx.compose.animation.AnimatedVisibility(
