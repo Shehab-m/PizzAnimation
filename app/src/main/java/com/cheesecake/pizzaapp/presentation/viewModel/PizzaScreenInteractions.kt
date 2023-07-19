@@ -1,4 +1,4 @@
-package com.cheesecake.pizzaapp.presentation
+package com.cheesecake.pizzaapp.presentation.viewModel
 
 import com.cheesecake.pizzaapp.model.PizzaSize
 

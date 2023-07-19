@@ -1,6 +1,5 @@
-package com.cheesecake.pizzaapp.presentation
+package com.cheesecake.pizzaapp.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cheesecake.pizzaapp.model.PizzaSize
 import com.cheesecake.pizzaapp.presentation.state.PizzaUIState
