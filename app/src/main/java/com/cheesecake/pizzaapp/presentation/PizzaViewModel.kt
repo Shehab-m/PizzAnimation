@@ -61,16 +61,37 @@ class PizzaViewModel @Inject constructor(private val repository: PizzaRepository
     override fun onClickBack() {
         _state.update {
             val pizzas = it.pizzas.toMutableList()
-            pizzas.forEach { pizza ->
-                pizza.toppings.forEach { topping ->
-                    topping.isSelected = false
-                }
+            val p = pizzas.map { pizza ->
+                pizza.copy(
+                    size = PizzaSize.MEDIUM,
+                    toppings = pizza.toppings.map {
+                        it.copy(
+                            isSelected = false
+                        )
+                    }
+                )
             }
-            Log.i("onClickBack: ",pizzas.toString())
-            it.copy(pizzas = repository.getPizzas())
-
+            it.copy(pizzas = p)
         }
-        Log.i("onClickBack: ",_state.value.toString())
     }
+
+//    override fun onClickBack() {
+//        _state.update {
+//            val o = it.pizzas.map { pizza ->
+//                pizza.copy(
+//                    toppings = pizza.toppings.map {
+//                        it.copy(
+//                            isSelected = false
+//                        )
+//                    }
+//                )
+//            }
+//
+//            it.copy(pizzas = o)
+//
+//
+//        }
+//        Log.i("onClickBack: ",_state.value.toString())
+//    }
 
 }

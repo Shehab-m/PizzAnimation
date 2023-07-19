@@ -43,8 +43,8 @@ fun HorizontalPizzaPager(
             PizzaSize.SMALL -> .6f
         })
         val toppingScale by animateFloatAsState(targetValue = when(pizzas[page].size){
-            PizzaSize.LARGE -> .6f
-            PizzaSize.MEDIUM -> .6f
+            PizzaSize.LARGE -> .55f
+            PizzaSize.MEDIUM -> .55f
             PizzaSize.SMALL -> .5f
         })
         Image(

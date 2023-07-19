@@ -11,9 +11,9 @@ class PizzaRepositoryImpl @Inject constructor() : PizzaRepository {
     override fun getToppings(): List<Topping> {
         return listOf(
             Topping(R.drawable.basil_3, R.drawable.group_basil, 2, false),
-            Topping(R.drawable.onion_3, R.drawable.group_basil, 3, false),
-            Topping(R.drawable.broccoli_3, R.drawable.group_basil, 4, false),
-            Topping(R.drawable.mushroom_3, R.drawable.group_basil, 3, false),
+            Topping(R.drawable.onion_3, R.drawable.group_onion, 3, false),
+            Topping(R.drawable.broccoli_3, R.drawable.group_brocli, 4, false),
+            Topping(R.drawable.mushroom_3, R.drawable.group_mushroom, 3, false),
             Topping(R.drawable.sausage_3, R.drawable.group_sussage, 5, false),
         )
     }

@@ -5,9 +5,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,15 +32,15 @@ fun RowPizzaSizes(
         val backgroundPosition by animateDpAsState(
             targetValue = when (size) {
                 PizzaSize.SMALL -> 0.dp
-                PizzaSize.MEDIUM -> 66.dp
-                PizzaSize.LARGE -> 121.dp
+                PizzaSize.MEDIUM -> 61.dp
+                PizzaSize.LARGE -> 122.dp
             }, animationSpec = tween(500)
         )
         Card(
             modifier = Modifier.offset(x = backgroundPosition).size(45.dp),
             colors = CardDefaults.cardColors(White),
             shape = CircleShape,
-            elevation = CardDefaults.cardElevation(2.dp)
+            elevation = CardDefaults.cardElevation(4.dp)
         ) {}
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -49,10 +51,11 @@ fun RowPizzaSizes(
                 text = "S",
                 onClick = { onClickSize(PizzaSize.SMALL) }
             )
+            Spacer(modifier = Modifier.width(16.dp))
             PizzaSizeCard(
                 text = "M",
-                modifier = Modifier.padding(horizontal = 16.dp),
                 onClick = { onClickSize(PizzaSize.MEDIUM) })
+            Spacer(modifier = Modifier.width(16.dp))
             PizzaSizeCard(
                 text = "L",
                 onClick = { onClickSize(PizzaSize.LARGE) })

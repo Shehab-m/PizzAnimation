@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesecake.pizzaapp.R
 import com.cheesecake.pizzaapp.model.PizzaSize
@@ -125,9 +126,9 @@ fun PizzaScreenContent(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            Button(modifier = Modifier
-                .padding(bottom = 40.dp)
-                .clip(RoundedCornerShape(4.dp)),
+
+            Button(modifier = Modifier.padding(bottom = 40.dp),
+                shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(Marron), onClick = {}
             ) {
                 Icon(
@@ -137,8 +138,8 @@ fun PizzaScreenContent(
                 )
                 Text(
                     text = "Add to cart",
-                    style = Typography.bodySmall,
-                    modifier = Modifier.padding(8.dp)
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
         }
