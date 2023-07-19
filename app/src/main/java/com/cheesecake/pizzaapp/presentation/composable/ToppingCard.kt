@@ -30,34 +30,24 @@ import com.cheesecake.pizzaapp.presentation.state.nextState
 import com.cheesecake.pizzaapp.ui.theme.Green
 
 @Composable
-fun ToppingCard(image: Painter, modifier: Modifier = Modifier,onClick: ()->Unit) {
-    var state by rememberSaveable {
-        mutableStateOf(CardToppingState.NOT_SELECTED)
-    }
-
+fun ToppingCard(image: Painter, modifier: Modifier = Modifier,onClick: ()->Unit,isSelected: Boolean) {
     val containerColor by animateColorAsState(
-        targetValue = when (state) {
-            CardToppingState.NOT_SELECTED -> Color.Transparent
-            else -> Green
-        }
+        targetValue = if (isSelected) Green else  Color.Transparent
     )
 
     Card(
-        modifier = modifier
-            .size(70.dp)
-            .clickable(
-                interactionSource = CreateMutableInteractionSource(),
-                indication = null,
-            ) { onClick.invoke().also { state = state.nextState() }},
+        modifier = modifier.size(70.dp).clickable(
+            interactionSource = CreateMutableInteractionSource(),
+            indication = null,
+            onClick = onClick
+            ),
         colors = CardDefaults.cardColors(containerColor),
         shape = CircleShape,
     ) {
         Box(modifier = Modifier.fillMaxSize())
         {
             Image(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(12.dp),
+                modifier = Modifier.align(Alignment.Center).padding(12.dp),
                 painter = image, contentDescription = "topping",
             )
         }
@@ -67,5 +57,5 @@ fun ToppingCard(image: Painter, modifier: Modifier = Modifier,onClick: ()->Unit)
 @Preview
 @Composable
 fun ToppingCardPreview() {
-    ToppingCard(painterResource(id = R.drawable.basil_3), onClick = {})
+    ToppingCard(painterResource(id = R.drawable.basil_3), onClick = {}, isSelected = true)
 }

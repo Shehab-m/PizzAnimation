@@ -5,5 +5,5 @@ import com.cheesecake.pizzaapp.model.Topping
 
 interface PizzaRepository {
     fun getToppings(): List<Topping>
-    fun getPizzas(): MutableList<Pizza>
+    fun getPizzas(): List<Pizza>
 }

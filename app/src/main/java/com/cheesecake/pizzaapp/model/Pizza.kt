@@ -3,9 +3,9 @@ package com.cheesecake.pizzaapp.model
 data class Pizza(
     val breadId: Int,
     val price: Int,
-    val size: Float,
-    val topping: MutableList<ToppingData>
-    ){
+    var size: PizzaSize,
+    val toppings: List<Topping>
+) {
     val totalPrice: Int
-        get() = price + topping.sumOf { it.price }
+        get() = price + toppings.filter { it.isSelected }.sumOf { it.price } + size.price
 }

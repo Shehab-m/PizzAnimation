@@ -1,8 +1,9 @@
 package com.cheesecake.pizzaapp.presentation
 
-import com.cheesecake.pizzaapp.model.ToppingData
+import com.cheesecake.pizzaapp.model.PizzaSize
 
 interface PizzaScreenInteractions {
-    fun onClickTopping(position: Int,toppingData: ToppingData)
-    fun onClickSize()
+    fun onClickTopping(toppingIndex: Int,position: Int)
+    fun onClickSize(position: Int,size: PizzaSize)
+    fun onClickBack()
 }

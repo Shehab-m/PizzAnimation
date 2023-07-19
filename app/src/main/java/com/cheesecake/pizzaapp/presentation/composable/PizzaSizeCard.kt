@@ -14,17 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cheesecake.pizzaapp.model.PizzaSize
 import com.cheesecake.pizzaapp.ui.theme.Typography
 import com.cheesecake.pizzaapp.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PizzaSizeCard(text: String, modifier: Modifier = Modifier) {
+fun PizzaSizeCard(text: String, modifier: Modifier = Modifier,onClick: ()->Unit) {
     Card(modifier = modifier
         .size(45.dp),
         colors = CardDefaults.cardColors(Color.Transparent),
         shape = CircleShape,
-        onClick = {}
+        onClick = onClick
     ) {
         Box(modifier = Modifier.fillMaxSize())
         {
@@ -40,5 +41,5 @@ fun PizzaSizeCard(text: String, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun CircleCardPreview() {
-    PizzaSizeCard("M")
+    PizzaSizeCard("M"){}
 }

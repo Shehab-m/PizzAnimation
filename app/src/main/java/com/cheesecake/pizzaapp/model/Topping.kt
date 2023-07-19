@@ -1,6 +1,8 @@
 package com.cheesecake.pizzaapp.model
 
 data class Topping(
-    val imageId: Int,
-    val toppingData: ToppingData
+    val imageMainId: Int,
+    val imageGroupId: Int,
+    val price: Int,
+    var isSelected: Boolean = false,
 )
